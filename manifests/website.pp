@@ -1,5 +1,5 @@
 # website definition
-define srv_website::website (
+define website::website (
   
   $userName,
   $userUid,

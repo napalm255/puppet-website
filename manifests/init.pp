@@ -1,4 +1,4 @@
-class srv_website (
+class website (
 
   $wwwEnabled = true,
   $wwwDirectory = '/opt/www',
