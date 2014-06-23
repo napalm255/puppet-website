@@ -16,7 +16,7 @@ class website::nginx () {
     owner   => 'root',
     group   => 'root',
     mode    => 0644,
-    content => template('srv_website/nginx.conf.erb'),
+    content => template('website/nginx.conf.erb'),
     notify  => [ Service['nginx'] ],
     require => Package['nginx'],
   }

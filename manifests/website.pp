@@ -126,7 +126,7 @@ define website::website (
     owner   => 'root',
     group   => 'root',
     mode    => 0644,
-    content => template('srv_website/nginx.erb'),
+    content => template('website/nginx.erb'),
   }
 
   # create php-fpm config file
@@ -135,7 +135,7 @@ define website::website (
     owner   => 'root',
     group   => 'root',
     mode    => 0644,
-    content => template('srv_website/fpm.erb'),
+    content => template('website/fpm.erb'),
   }
 
   # ensure fpm.sock is correct user/group of nginx
