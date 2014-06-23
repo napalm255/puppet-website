@@ -1,0 +1,53 @@
+#
+# <%= @domainName %> 
+#
+
+server {
+    listen       80;
+    server_name  <%= @domainName %> www.<%= @domainName %>;
+
+    root   <%= @domainDir %>/http;
+
+    access_log <%= @domainDir %>/logs/access.log main;
+
+    if ($host = 'www.<%= @domainName %>' ) {
+         rewrite  ^/(.*)$  http://<%= @domainName %>/$1  permanent;
+    }
+
+    location ~ \.php$ {
+        include /etc/nginx/fastcgi_params;
+        fastcgi_pass  unix:<%= @domainDir %>/fpm.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME <%= @domainDir %>/http/$fastcgi_script_name;
+    }
+
+    location ~ ^/\.git { deny all; } #Deny Access to .git folders
+
+<% if @domainName == "mentalminis.com" %>
+    location / {
+        index doku.php;
+        try_files $uri $uri/ @dokuwiki;
+    }
+
+    location @dokuwiki {
+        rewrite ^/_media/(.*) /lib/exe/fetch.php?media=$1 last;
+        rewrite ^/_detail/(.*) /lib/exe/detail.php?media=$1 last;
+        rewrite ^/_export/([^/]+)/(.*) /doku.php?do=export_$1&id=$2 last;
+        rewrite ^/(.*) /doku.php?id=$1 last;
+    }
+
+    location ~ ^/(data|conf|bin|inc)/ { deny all; } #Secure DokuWiki
+    location ~ /\.ht { deny all; } #Deny Access to htaccess-Files for Apache
+
+    # serve static files
+    location ~ ^/lib/^((?!php).)*$  {
+        expires 30d;
+    }
+<% else %>
+    location / {
+        index  index.html index.htm index.php;
+    }
+<% end %>
+
+}
+
