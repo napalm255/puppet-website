@@ -139,13 +139,13 @@ define website::website (
   #}
 
   # create php-fpm config file
-  #file { "/etc/php-fpm.d/${userName}.conf":
-  #  ensure  => present,
-  #  owner   => 'root',
-  #  group   => 'root',
-  #  mode    => 0644,
-  #  content => template('website/fpm.erb'),
-  #}
+  file { "/etc/php-fpm.d/${userName}.conf":
+    ensure  => present,
+    owner   => 'root',
+    group   => 'root',
+    mode    => 0644,
+    content => template('website/fpm.erb'),
+  }
 
   # ensure fpm.sock is correct user/group of nginx
   file { "fpm.sock_${domainName}" :

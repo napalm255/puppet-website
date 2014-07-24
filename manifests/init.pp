@@ -47,6 +47,12 @@ class website (
     }
   } 
 
+  # remove www.conf from php-fpm.d
+  file { "php-fpm_default" :
+    name   => "/etc/php-fpm.d/www.conf",
+    ensure => "absent",
+  }
+
   # ebs mount volume for aws ec2
   if $ebsMountEnabled == true {
     file { $ebsMountDirectory :
