@@ -119,15 +119,6 @@ define website::website (
     require => [ File["domain_dir_stats_${domainName}"] ],
   }
 
-  # create nginx config file
-  #file { "/etc/nginx/conf.d/${userName}.conf":
-  #  ensure  => present,
-  #  owner   => 'root',
-  #  group   => 'root',
-  #  mode    => 0644,
-  #  content => template('website/nginx.erb'),
-  #}
-
   # create php-fpm config file
   file { "/etc/php-fpm.d/${userName}.conf":
     ensure  => present,
@@ -147,14 +138,4 @@ define website::website (
     require => [ File["domain_dir_root_${domainName}"] ],
   }
 
-  #if $gitRepoUrl != undef {
-  #  vcsrepo { "${domainDir}/http":
-  #    ensure   => $gitRepoEnsure,
-  #    provider => 'git',
-  #    source   => $gitRepoUrl,
-  #    owner    => $userName,
-  #    group    => $groupName,
-  #    require  => Exec["setfacl-${domainName}-http"],
-  #  }
-  #}
 }
