@@ -30,15 +30,6 @@ define website::website (
 
 ) {
 
-  # create jail
-  #file { "user_home_root_${userHomeRoot}" :
-  #  ensure  => 'directory',
-  #  path    => $userHomeRoot,
-  #  owner   => 'root',
-  #  group   => 'root',
-  #  mode    => '0755',
-  #}
-
   # create user and group
   user { "user_${userName}" :
     ensure           => $userEnsure,
@@ -156,14 +147,14 @@ define website::website (
     require => [ File["domain_dir_root_${domainName}"] ],
   }
 
-  if $gitRepoUrl != undef {
-    vcsrepo { "${domainDir}/http":
-      ensure   => $gitRepoEnsure,
-      provider => 'git',
-      source   => $gitRepoUrl,
-      owner    => $userName,
-      group    => $groupName,
-      require  => Exec["setfacl-${domainName}-http"],
-    }
-  }
+  #if $gitRepoUrl != undef {
+  #  vcsrepo { "${domainDir}/http":
+  #    ensure   => $gitRepoEnsure,
+  #    provider => 'git',
+  #    source   => $gitRepoUrl,
+  #    owner    => $userName,
+  #    group    => $groupName,
+  #    require  => Exec["setfacl-${domainName}-http"],
+  #  }
+  #}
 }
