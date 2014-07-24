@@ -31,6 +31,15 @@ define website::website (
 
 ) {
 
+  # create jail
+  #file { "user_home_root_${userHomeRoot}" :
+  #  ensure  => 'directory',
+  #  path    => $userHomeRoot,
+  #  owner   => 'root',
+  #  group   => 'root',
+  #  mode    => '0755',
+  #}
+
   # create user and group
   user { "user_${userName}" :
     ensure           => $userEnsure,
@@ -44,13 +53,13 @@ define website::website (
     shell            => $userShell,
     uid              => $userUid,
     managehome       => $userManageHome,
-    require          => [ File[$userHomeRoot] ],
+    require          => [ File["jail_directory"] ],
   }
   group { "group_${groupName}" :
-    ensure => $userEnsure,
-    name   => $groupName,
-    before => User["user_${userName}"],
-    gid    => $groupGid,
+    ensure  => $userEnsure,
+    name    => $groupName,
+    gid     => $groupGid,
+    before  => User["user_${userName}"],
   }
 
   # create directory structure
@@ -121,22 +130,22 @@ define website::website (
   }
 
   # create nginx config file
-  file { "/etc/nginx/conf.d/${userName}.conf":
-    ensure  => present,
-    owner   => 'root',
-    group   => 'root',
-    mode    => 0644,
-    content => template('website/nginx.erb'),
-  }
+  #file { "/etc/nginx/conf.d/${userName}.conf":
+  #  ensure  => present,
+  #  owner   => 'root',
+  #  group   => 'root',
+  #  mode    => 0644,
+  #  content => template('website/nginx.erb'),
+  #}
 
   # create php-fpm config file
-  file { "/etc/php-fpm.d/${userName}.conf":
-    ensure  => present,
-    owner   => 'root',
-    group   => 'root',
-    mode    => 0644,
-    content => template('website/fpm.erb'),
-  }
+  #file { "/etc/php-fpm.d/${userName}.conf":
+  #  ensure  => present,
+  #  owner   => 'root',
+  #  group   => 'root',
+  #  mode    => 0644,
+  #  content => template('website/fpm.erb'),
+  #}
 
   # ensure fpm.sock is correct user/group of nginx
   file { "fpm.sock_${domainName}" :
