@@ -2,11 +2,10 @@
 define website::website (
   
   $userName,
+  $groupName,
   $userUid,
   $groupGid,
   $domainName,
-
-  $groupName = $userName,
 
   $userGroups = [$groupName],
   $userHomeRoot = '/opt/jail',
